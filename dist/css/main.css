@@ -368,7 +368,7 @@
     line-height: 100%;
     color: var(--text);
   }
-
+  
   #myDuckiesImages {
     display: flex;
     flex-wrap: wrap;
