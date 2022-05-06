@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,7 @@
     <meta property="og:title" content="Crypto Duckies Migration" />
     <title>Crypto Duckies Migration</title>
 
-    <link rel="stylesheet" type="text/css" href="dist/css/main.css">
+    <link rel="stylesheet" type="text/css" href=" dist/css/main.css">
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-L8HYPFBTLN"></script>
@@ -112,43 +111,14 @@
           <div id="myDuckiesImages"></div>
 
           <br>
-          <small>Your Duckie ID(s)</small>
+          <small>Duckie ID(s) to Migrate</small>
           <div id="myDuckiesID">You have no legacy Duckies in your wallet.</div>
 
         </div>
+        <label>
+          <button id="migrateButton" class="button button--outline-white" onclick="migrate()" disabled>Migrate Duckies</button>
+        </label>
       </section>
-
-
-
-
-      <div class="split">
-        <!-- migrate one duckie -->
-        <section class="section section--padding section--black migration-form">
-          <div class="container">
-            <h2 class="title title--h2">Migrate <span>one Duckie</span></h2>
-            <small>ⓘ Fill in your Duckie number without the # (example: 38).<br>ⓘ If you are not the owner of the Duckie # below, or the duckie is already migrated, the transaction will fail, leading to a potential loss in gas fees.</small>
-
-            <label>
-              <input class="input" type="text" id="inputMigrateSingle" placeholder="475">
-              <button class="button button--outline-white" onclick="migrate()">Migrate Duckie</button>
-            </label>
-          </div>
-        </section>
-
-        <!-- migrate multiple duckies -->
-        <section class="section section--padding section--black migration-form" style="background-color: #570068;">
-          <div class="container">
-            <h2 class="title title--h2">Migrate <span>multiple Duckies</span></h2>
-            <small>ⓘ Fill in your Duckie numbers without the # and separate them by a comma (example: 353,326,2).
-              <br>ⓘ If you are not the owner of the Duckie # below, or the duckie is already migrated, the transaction will fail, leading to a potential loss in gas fees.</small>
-
-            <label>
-              <input class="input" type="text" id="inputMigrateFlock" placeholder="56,79,98">
-              <button class="button button--outline-white"onclick="migrateFlock()">Migrate Duckies</button>
-            </label>
-          </div>
-        </section>
-      </div>
     </div>
 
 
@@ -231,8 +201,13 @@
   // Contract functions
 
   function migrate() {
-    let duckieID = document.getElementById("inputMigrateSingle").value | 0;
+    duckieNumbers.length == 1
+      ? migrateOne(duckieNumbers[0])
+      : migrateFlock(duckieNumbers);
+  }
 
+  function migrateOne(duckieID) {
+    console.log(duckieID)
     const options = {
       from: currentAccount
     }
@@ -275,23 +250,7 @@
     });
   }
 
-  function migrateFlock() {
-    const gasPrice = web3.eth.getGasPrice();
-    let getIds = document.getElementById("inputMigrateFlock").value;
-    var newArray = getIds.split(',');
-
-    // change to integers
-    var intArray = newArray.map(function (x) {
-        return parseInt(x, 10);
-    });
-
-    // remove none numbers
-    var duckieIds = intArray.filter(function (value) {
-        return !Number.isNaN(value);
-    });
-
-    console.log(duckieIds)
-
+  function migrateFlock(duckieNumbers) {
     const options = {
       from: currentAccount,
     }
@@ -300,7 +259,7 @@
     loader.style.display = 'flex';
 
     // contract function
-    contract.methods.migrateFlock(duckieIds)
+    contract.methods.migrateFlock(duckieNumbers)
     .send(options)
     .then(result => {
       console.log(result);
@@ -335,7 +294,8 @@
   }
 
   function checkApproval() {
-    contractOpenSea.methods.isApprovedForAll(currentAccount, contractLocation.address).call().then(output => {
+    // contractOpenSea.methods.isApprovedForAll(currentAccount, contractLocation.address).call().then(output => {
+      output = true;
       console.log('Approved:' + output);
       if (output == false) {
         approveBlock.style.display = 'block';
@@ -346,9 +306,9 @@
         migrationBlock.style.display = 'block';
       }
 
-    }).catch(error => {
-      console.error('oops', error);
-    });
+    // }).catch(error => {
+    //   console.error('oops', error);
+    // });
   }
 
   function setApproval() {
@@ -461,39 +421,53 @@
       .then(response => response.json())
       .then(data => {
           var duckieData = data['assets'];
-          var duckieNumbers = []
+          duckieNumbers = []
 
           document.getElementById("myDuckiesImages").innerHTML = "";
 
           data.assets.forEach( function(obj) {
+            var duckieId = obj.name.slice(8);
+            duckieNumbers.push(duckieId);
+
+            var imgWrapper = document.createElement("div");
+            imgWrapper.className = "img-wrapper selected";
+
+            imgWrapper.onclick = function() {
+              this.classList.toggle("selected")
+                ? duckieNumbers.push(duckieId)
+                : duckieNumbers.splice(duckieNumbers.indexOf(duckieId), 1);
+
+              refreshDuckieNumbers();
+            }
+
             var img = new Image();
             img.src = obj.image_url;
             img.setAttribute("class", "image");
             img.setAttribute("alt", "effy");
-            document.getElementById("myDuckiesImages").appendChild(img);
+            imgWrapper.appendChild(img);
+            imgWrapper.innerHTML += "<br>"+duckieId;
+            document.getElementById("myDuckiesImages").appendChild(imgWrapper);
           });
 
-
-          for(var key in duckieData) {
-              var duckieNumber = duckieData[key]['name'].replace('Duckie #', '');
-              var duckieImage = duckieData[key]['image_url'];
-              console.log(duckieImage);
-
-              duckieNumbers.push(duckieNumber)
-              document.getElementById('myDuckiesID').innerHTML = duckieNumbers;
-              document.getElementById('inputMigrateFlock').value = duckieNumbers;
-
-          }
-          //console.log(duckieNumbers)
+          refreshDuckieNumbers();
       })
   }
 
-
+  function refreshDuckieNumbers() {
+    document.getElementById("migrateButton").disabled = duckieNumbers.length == 0;
+    document.getElementById('myDuckiesID').innerHTML =
+      duckieNumbers.length == 0 ? "None" : duckieNumbers.join(", ");
+  }
 
   window.addEventListener('load', async () => {
     init();
     document.querySelector("#btn-connect").addEventListener("click", onConnect);
   });
+
+  // Mock account to test UI. Remove Me!
+  currentAccount = "0xBFB3e090eCbb84C7436C31dfEaE08A94FDaA4D14";
+  checkApproval();
+  getDuckies();
 
   </script>
 
