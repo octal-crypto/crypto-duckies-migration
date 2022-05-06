@@ -121,9 +121,6 @@
     color: var(--text);
     cursor: pointer;
   }
-  .button:disabled {
-    visibility: hidden;
-  }
   .button:hover {
     background: #000;
     color: white;
@@ -342,6 +339,9 @@
   }
   #migrateButton {
     background-color:black;
+  }
+  #migrateButton:disabled {
+    visibility: hidden;
   }
   .migration-form hr {
     display: block;
