@@ -368,7 +368,6 @@
     line-height: 100%;
     color: var(--text);
   }
-  
   #myDuckiesImages {
     display: flex;
     flex-wrap: wrap;
@@ -377,11 +376,9 @@
     width: 100px;
     border-radius: 5px;
   }
-  
   .img-wrapper:hover {
     cursor: pointer;
   }
-  
   .img-wrapper {
     position: relative;
     line-height: 15px;
@@ -396,24 +393,20 @@
     border-width: 3px;
     border-color:#808080;
   }
-  
   .img-wrapper.selected {
     border-color:rgb(0 255 132);
   }
-  
-  
   .img-wrapper::after {
     content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGZpbGw9IiM4MDgwODAgICAgICIgZD0iTTEyIDIyQzE3LjUyMjggMjIgMjIgMTcuNTIyOCAyMiAxMkMyMiA2LjQ3NzE1IDE3LjUyMjggMiAxMiAyQzYuNDc3MTUgMiAyIDYuNDc3MTUgMiAxMkMyIDE3LjUyMjggNi40NzcxNSAyMiAxMiAyMloiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=);
     position: absolute;
     right: -15px;
     bottom: -15px;
   }
-  
   .img-wrapper.selected::after {
     content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHN0cm9rZS13aWR0aD0iMS41IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGw9InJnYigwIDI1NSAxMzIpIiBkPSJNMTIgMjJDMTcuNTIyOCAyMiAyMiAxNy41MjI4IDIyIDEyQzIyIDYuNDc3MTUgMTcuNTIyOCAyIDEyIDJDNi40NzcxNSAyIDIgNi40NzcxNSAyIDEyQzIgMTcuNTIyOCA2LjQ3NzE1IDIyIDEyIDIyWiIgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNNyAxMi41TDEwIDE1LjVMMTcgOC41IiAgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPg==);
   }
-  
-  
+
+
   .duckie-marquee {
     width: 100%;
     position: relative;

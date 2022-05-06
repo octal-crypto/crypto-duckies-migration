@@ -202,13 +202,15 @@
   // Contract functions
 
   function migrate() {
-    duckieNumbers.length == 1
-      ? migrateOne(duckieNumbers[0])
-      : migrateFlock(duckieNumbers);
+    return duckieNumbers.length == 0 ? null
+      : duckieNumbers.length == 1
+        ? migrateOne(duckieNumbers[0])
+        : migrateFlock(duckieNumbers);
   }
 
   function migrateOne(duckieID) {
-    console.log(duckieID)
+    console.log("Migrating " + duckieID);
+
     const options = {
       from: currentAccount
     }
@@ -252,6 +254,8 @@
   }
 
   function migrateFlock(duckieNumbers) {
+    console.log("Migrating " + duckieNumbers);
+
     const options = {
       from: currentAccount,
     }
